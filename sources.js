@@ -30,8 +30,10 @@ async function request(url,data) {
 
 async function stream(einthusan_id) {
 	var id = einthusan_id.split(":")[1];
-	return request(" https://einthusan-cli.herokuapp.com/api/info?url="+`${baseURL}/movie/watch/${id}/`)
+	
+	return request("https://dl-api-server.herokuapp.com/api/info?url="+`${baseURL}/movie/watch/${id}/`)
 	.then((res) => {
+		
 		streams={  name: 'einthusan',
 			   description: 'einthusan',
 			  url: res.data.info.url};
@@ -46,7 +48,7 @@ async function meta(einthusan_id) {
 	var id = einthusan_id.split(":")[1];
 
 	var url = `${baseURL}/movie/watch/${id}/`;
-	//console.log("url", url);
+	console.log("url", url);
 	return request(
     url,
   ).then((res) => {
@@ -94,6 +96,7 @@ async function meta(einthusan_id) {
         };
 	if (year){metaObj.releaseInfo = year};
 	if (img){metaObj.poster = "https:" + img};
+	if (img){metaObj.background = "https:" + img};
 	if (year){metaObj.releaseInfo = year};
 	if (genres){metaObj.genres = genres};
 	if (description){metaObj.description = description};
