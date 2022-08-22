@@ -141,7 +141,8 @@ async function search(lang, slug) {
     var res = [];
 	while (res.length == 0) {
 		//console.log('res:', res);
-		res = await searchresults(url,lang,slug);
+		res = await getcatalogresults(url);
+		//res = await searchresults(url,lang,slug);
 		//await sleep(5000); 
 	}
 	return res;
