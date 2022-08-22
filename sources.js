@@ -163,8 +163,8 @@ async function searchresults(url,lang,slug) {
             return [];
         }
         var results_info = html.querySelector("div.results-info p").childNodes[0].rawText.split('Page ')[1].split(' of ')[1];
-		if (results_info>5){
-			results_info = 5;
+		if (results_info>1){
+			results_info = 1;
 		}
         return searchcatalog(lang, slug, results_info).then((res) => {
             //console.log('res:',res);
