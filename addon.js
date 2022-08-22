@@ -11,10 +11,9 @@ const builder = new addonBuilder(manifest)
 builder.defineStreamHandler((args) => {
 	console.log("addon.js streams:", args);
   if(args.id.match(/einthusan_id:[^xyz]*/i)){
-		//console.log('meta mycima');
     return Promise.resolve(sources.stream(args.id))
 	.then((streams) => ({  streams: [ streams]}));
-	//.then((streams) => { console.log('streams', streams)});
+	//.then((streams) => { console.log('streams', args+streams)});
 	}else {
 	  console.log('stream reject');
 	return Promise.resolve({ streams: [] });
