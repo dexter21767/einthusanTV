@@ -7,19 +7,12 @@
 	},
 	"dependencies": {
 		"axios": "^0.27.2",
-		"axios-cookiejar-support": "^4.0.3",
-		"cache-manager": "^4.1.0",
-		"cache-manager-mongodb": "^0.3.0",
-		"dotenv": "^16.0.1",
 		"fast-html-parser": "^1.0.1",
-		"mongodb": "^4.8.1",
 		"needle": "^3.1.0",
-		"puppeteer": "^15.5.0",
 		"slugify": "^1.6.5",
 		"stremio-addon-sdk": "1.1.x",
 		"tough-cookie": "^4.0.0",
 		"urlsafe-base64": "^1.0.0",
-		"xpath": "^0.0.32",
-		"xpath-html": "^1.0.3"
+		"xpath": "^0.0.32"
 	}
 }
