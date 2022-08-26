@@ -3,8 +3,8 @@
     "version": "0.0.4",
     "name": "einthusanTV by dexter21767",
     "description": "Addon for Streaming from einthusanTV by Dexter21767",
-	"logo": "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/gcmbuxkswz7xmb5e8fas",
-	"contactEmail":"ahmidiyasser@gmail.com",
+    "logo": "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/gcmbuxkswz7xmb5e8fas",
+    "contactEmail": "ahmidiyasser@gmail.com",
     "catalogs": [{
             "type": "movie",
 
@@ -18,8 +18,7 @@
                     "isRequired": true
                 }
             ]
-        },
-		{
+        }, {
             "type": "movie",
 
             "id": "tamilmovies",
@@ -32,8 +31,7 @@
                     "isRequired": true
                 }
             ]
-        }
-		,{
+        }, {
             "type": "movie",
 
             "id": "telugumovies",
@@ -46,8 +44,7 @@
                     "isRequired": true
                 }
             ]
-        }
-		,{
+        }, {
             "type": "movie",
 
             "id": "malayalammovies",
@@ -60,8 +57,7 @@
                     "isRequired": true
                 }
             ]
-        }
-		,{
+        }, {
             "type": "movie",
 
             "id": "kannadamovies",
@@ -74,8 +70,7 @@
                     "isRequired": true
                 }
             ]
-        }
-		,{
+        }, {
             "type": "movie",
 
             "id": "bengalimovies",
@@ -88,7 +83,7 @@
                     "isRequired": true
                 }
             ]
-        },{
+        }, {
             "type": "movie",
 
             "id": "marathimovies",
@@ -101,7 +96,7 @@
                     "isRequired": true
                 }
             ]
-        },{
+        }, {
             "type": "movie",
 
             "id": "punjabimovies",
@@ -116,23 +111,21 @@
             ]
         }
     ],
-    "resources": [
-		{
+    "resources": [{
             "name": "stream",
             "types": [
                 "movie"
             ],
             "idPrefixes": [
-				"einthusan_id"
+                "einthusan_id"
             ]
-        }, 
-		{
-			"name": "meta",
-			"types": [
+        }, {
+            "name": "meta",
+            "types": [
                 "movie"
             ],
-			"idPrefixes": ["einthusan_id"]
-		}
+            "idPrefixes": ["einthusan_id"]
+        }
     ],
     "types": [
         "movie"
