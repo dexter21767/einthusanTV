@@ -3,7 +3,7 @@
     "version": "0.0.4",
     "name": "einthusanTV by dexter21767",
     "description": "Addon for Streaming from einthusanTV by Dexter21767",
-	"logo": "https://2ecbbd610840-einthusantv.baby-beamup.club/logo.webp",
+	"logo": "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/gcmbuxkswz7xmb5e8fas",
 	"contactEmail":"ahmidiyasser@gmail.com",
     "catalogs": [{
             "type": "movie",
