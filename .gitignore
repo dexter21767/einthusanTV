@@ -1,0 +1,6 @@
+# ignore ALL .log files
+*.log
+/node_modules
+/res
+/server.js
+/beamup.json
