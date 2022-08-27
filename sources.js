@@ -4,6 +4,9 @@ const {
 } = require("fast-html-parser");
 var URLSafeBase64 = require('urlsafe-base64');
 const baseURL = "https://einthusan.tv";
+const youtubedl = require("youtube-dl-exec");
+
+
 
 const {
 default:
@@ -29,9 +32,26 @@ async function request(url, data) {
 }
 
 async function stream(einthusan_id) {
-    var id = einthusan_id.split(":")[1];
 
-    return request("https://dl-api-server.herokuapp.com/api/info?url=" + `${baseURL}/movie/watch/${id}/`)
+    var id = einthusan_id.split(":")[1];
+	let url = `${baseURL}/movie/watch/${id}/`;
+	let info = await youtubedl(url, {
+  dumpSingleJson: true
+});
+
+let streams={
+name: 'einthusan',
+url: info.formats[1].url,
+description: 'einthusan',
+};
+
+return streams;
+		/*
+	console.log(extractors);
+	let metadata = await youtubedl.getVideoInfo(url);
+	console.log(metadata);
+    return youtubeDlWrap.exec([`${baseURL}/movie/watch/${id}/`,"-f", "best", "-o", "output.mp4"])
+	return
     .then((res) => {
 
         streams = {
@@ -41,7 +61,7 @@ async function stream(einthusan_id) {
         };
         //console.log('res',res.data.info.url);
         return streams;
-    });
+    });*/
 }
 
 async function meta(einthusan_id) {

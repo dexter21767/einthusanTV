@@ -11,7 +11,7 @@
 		"needle": "^3.1.0",
 		"slugify": "^1.6.5",
 		"stremio-addon-sdk": "1.1.x",
-		"tough-cookie": "^4.0.0",
-		"urlsafe-base64": "^1.0.0"
+		"urlsafe-base64": "^1.0.0",
+		"youtube-dl-exec": "^2.1.5"
 	}
 }

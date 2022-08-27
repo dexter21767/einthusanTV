@@ -12,7 +12,7 @@ builder.defineStreamHandler((args) => {
 	console.log("addon.js streams:", args);
   if(args.id.match(/einthusan_id:[^xyz]*/i)){
     return Promise.resolve(sources.stream(args.id))
-	.then((streams) => ({  streams: [ streams]}));
+	.then((streams) => ({  streams: [ streams ]}));
 	//.then((streams) => { console.log('streams', args+streams)});
 	}else {
 	  console.log('stream reject');
