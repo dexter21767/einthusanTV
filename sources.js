@@ -6,8 +6,6 @@ var URLSafeBase64 = require('urlsafe-base64');
 const baseURL = "https://einthusan.tv";
 const youtubedl = require("youtube-dl-exec");
 
-
-
 const {
 default:
     axios
@@ -19,10 +17,10 @@ async function request(url, data) {
     return await axios
     .get(url)
     .then(res => {
-		
+
         // console.log(`statusCode: ${res.status}`);
         return res;
-		
+
     })
     .catch(error => {
         //console.error(error);
@@ -34,34 +32,19 @@ async function request(url, data) {
 async function stream(einthusan_id) {
 
     var id = einthusan_id.split(":")[1];
-	let url = `${baseURL}/movie/watch/${id}/`;
-	let info = await youtubedl(url, {
-  dumpSingleJson: true
-});
+    let url = `${baseURL}/movie/watch/${id}/`;
+    let info = await youtubedl(url, {
+        dumpSingleJson: true
+    });
 
-let streams={
-name: 'einthusan',
-url: info.formats[1].url,
-description: 'einthusan',
-};
+    let streams = {
+        name: 'einthusan',
+        description: 'einthusan',
+        url: info.url,
+    };
+	//console.log(streams)
+    return streams;
 
-return streams;
-		/*
-	console.log(extractors);
-	let metadata = await youtubedl.getVideoInfo(url);
-	console.log(metadata);
-    return youtubeDlWrap.exec([`${baseURL}/movie/watch/${id}/`,"-f", "best", "-o", "output.mp4"])
-	return
-    .then((res) => {
-
-        streams = {
-            name: 'einthusan',
-            description: 'einthusan',
-            url: res.data.info.url
-        };
-        //console.log('res',res.data.info.url);
-        return streams;
-    });*/
 }
 
 async function meta(einthusan_id) {
@@ -70,73 +53,78 @@ async function meta(einthusan_id) {
 
     var url = `${baseURL}/movie/watch/${id}/`;
     console.log("url", url);
-    return request(
-        url, ).then((res) => {
-        var html = parse(res.data);
-        var movie_description = html.querySelector("#UIMovieSummary").querySelector("li");
-        var img = movie_description.querySelector("div.block1 a img").rawAttributes['src'];
-        var year = movie_description.querySelector("div.info p").childNodes[0].rawText;
-        var title = movie_description.querySelector("a.title h3").rawText;
-        var description = movie_description.querySelector("p.synopsis").rawText;
-        //var genresarray = details[3].childNodes[2].querySelectorAll("a");
-        var genresarray = [];
+    var res = await request(url);
+    var html = parse(res.data);
+	
+    var movie_description = html.querySelector("#UIMovieSummary").querySelector("li");
+    var img = movie_description.querySelector("div.block1 a img").rawAttributes['src'];
+    var year = movie_description.querySelector("div.info p").childNodes[0].rawText;
+    var title = movie_description.querySelector("a.title h3").rawText;
+    var description = movie_description.querySelector("p.synopsis").rawText;
+    //var genresarray = details[3].childNodes[2].querySelectorAll("a");
+    var genresarray = [];
 
-        var actorsarray = html.querySelectorAll("div.prof p");
-        /*trailer = html.querySelector("div.TrailerCode iframe");
-        if (trailer){
-        trailer = trailer.rawAttributes['data-ifr'];
-        if (trailer){
-        trailer = trailer.split('/embed/')[1];
+    var actorsarray = html.querySelectorAll("div.prof p");
+
+    var trailer = html.querySelectorAll("div.extras a")[1];
+    if (trailer.rawAttributes['href']) {
+        trailer = trailer.rawAttributes['href'].split("v=")[1];
+    } else {
+        trailer = false;
+    }
+
+    var actors = [];
+    if (actorsarray) {
+        for (let i = 0; i < actorsarray.length; i++) {
+            actors[i] = actorsarray[i].rawText;
         }
-        }*/
+    }
 
-        var actors = [];
-        if (actorsarray) {
-            for (let i = 0; i < actorsarray.length; i++) {
-                actors[i] = actorsarray[i].rawText;
+    var genres = [];
+    if (genresarray) {
+        for (let i = 0; i < genresarray.length; i++) {
+            genres[i] = genresarray[i].rawText;
+        }
+    }
+
+    var metaObj = {
+        id: einthusan_id,
+        name: title,
+        posterShape: 'poster',
+        type: 'movie',
+    };
+    if (year) {
+        metaObj.releaseInfo = year
+    };
+    if (img) {
+        metaObj.poster = "https:" + img
+    };
+    if (img) {
+        metaObj.background = "https:" + img
+    };
+    if (year) {
+        metaObj.releaseInfo = year
+    };
+    if (genres) {
+        metaObj.genres = genres
+    };
+    if (description) {
+        metaObj.description = description
+    };
+    if (actors) {
+        metaObj.cast = actors
+    };
+    //if (runtime){metaObj.runtime = runtime};
+    if (trailer) {
+        metaObj.trailers = [{
+                source: trailer,
+                type: "Trailer"
             }
-        }
+        ]
+    }
 
-        var genres = [];
-        if (genresarray) {
-            for (let i = 0; i < genresarray.length; i++) {
-                genres[i] = genresarray[i].rawText;
-            }
-        }
-
-        var metaObj = {
-            id: einthusan_id,
-            name: title,
-            posterShape: 'poster',
-            type: 'movie',
-        };
-        if (year) {
-            metaObj.releaseInfo = year
-        };
-        if (img) {
-            metaObj.poster = "https:" + img
-        };
-        if (img) {
-            metaObj.background = "https:" + img
-        };
-        if (year) {
-            metaObj.releaseInfo = year
-        };
-        if (genres) {
-            metaObj.genres = genres
-        };
-        if (description) {
-            metaObj.description = description
-        };
-        if (actors) {
-            metaObj.cast = actors
-        };
-        //if (runtime){metaObj.runtime = runtime};
-        //if (trailer){metaObj.trailers = { "source": trailer, "type": "Trailer" }};
-
-        console.log("metaObj", metaObj);
-        return metaObj;
-    });
+    //console.log("metaObj", metaObj);
+    return metaObj;
 
 }
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
@@ -149,19 +137,19 @@ async function search(lang, slug) {
     var url = `${baseURL}/movie/results/?lang=${lang}&query=${slug}`;
     console.log('search url:', url);
     var res = [];
-	while (res.length == 0) {
-		//console.log('res:', res);
-		res = await getcatalogresults(url);
-		//res = await searchresults(url,lang,slug);
-		//await sleep(5000); 
-	}
-	return res;
+    while (res.length == 0) {
+        //console.log('res:', res);
+        res = await getcatalogresults(url);
+        //res = await searchresults(url,lang,slug);
+        //await sleep(5000);
+    }
+    return res;
 
 }
-async function searchresults(url,lang,slug) {
-	return request(
+async function searchresults(url, lang, slug) {
+    return request(
         url).then((res) => {
-			if(res.status != 200) {
+        if (res.status != 200) {
             return [];
         }
         var html = parse(res.data);
@@ -174,15 +162,17 @@ async function searchresults(url,lang,slug) {
             return [];
         }
         var results_info = html.querySelector("div.results-info p").childNodes[0].rawText.split('Page ')[1].split(' of ')[1];
-		if (results_info>1){
-			results_info = 1;
-		}
+        if (results_info > 1) {
+            results_info = 1;
+        }
         return searchcatalog(lang, slug, results_info).then((res) => {
             //console.log('res:',res);
             return res;
 
         })
-    }).catch(function (error) {return [];});
+    }).catch(function (error) {
+        return [];
+    });
 }
 async function searchcatalog(lang, slug, pages) {
     var resultsarray = [];
@@ -192,26 +182,25 @@ async function searchcatalog(lang, slug, pages) {
     return resultsarray.flat();
 }
 
-
 async function getcatalog(lang, slug, page) {
     if (page == 1) {
         var url = `${baseURL}/movie/results/?lang=${lang}&query=${slug}`;
     } else {
         var url = `${baseURL}/movie/results/?lang=${lang}&page=${page}&query=${slug}`;
     }
-	var cat = [];
-	while (cat.length == 0) {
-		//console.log('res:', cat);
-		cat = await getcatalogresults(url);
-		//await sleep(5000); 
-	}
-	return cat;
-    
+    var cat = [];
+    while (cat.length == 0) {
+        //console.log('res:', cat);
+        cat = await getcatalogresults(url);
+        //await sleep(5000);
+    }
+    return cat;
+
 }
 async function getcatalogresults(url) {
-	return request(
+    return request(
         url).then((res) => {
-		if(res.status != 200) {
+        if (res.status != 200) {
             return [];
         }
         var html = parse(res.data);
@@ -238,7 +227,9 @@ async function getcatalogresults(url) {
         }
         //console.log('resultsarray:', resultsarray);
         return resultsarray;
-    }).catch(function (error) {return [];});
+    }).catch(function (error) {
+        return [];
+    });
 }
 module.exports = {
     search,
