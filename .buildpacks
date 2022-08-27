@@ -1,2 +1,2 @@
-node-js-app heroku/nodejs
-python-app heroku/python
+heroku/nodejs
+heroku/python
