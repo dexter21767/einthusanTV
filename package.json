@@ -3,7 +3,6 @@
 	"version": "0.0.1",
 	"description": "Addon for Streaming from Arabic websites",
 	"scripts": {
-		"preinstall": "npm install youtube-dl-exec --save --python=python3.7",
 		"start": "node server.js"
 	},
 	"dependencies": {
