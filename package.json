@@ -1,7 +1,7 @@
 {
-	"name": "stremio-addon-StreamAR",
-	"version": "0.0.1",
-	"description": "Addon for Streaming from Arabic websites",
+	"name": "stremio-addon-einthusantv",
+	"version": "0.0.5",
+	"description": "Addon for Streaming from einthusanTV by Dexter21767",
 	"scripts": {
 		"start": "node server.js"
 	},

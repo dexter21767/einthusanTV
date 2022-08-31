@@ -2,5 +2,5 @@
 *.log
 /node_modules
 /res
-/server.js
+#/server.js
 /beamup.json
