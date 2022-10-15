@@ -1,10 +1,11 @@
-const needle = require("needle");
 const {
     parse
 } = require("fast-html-parser");
-var URLSafeBase64 = require('urlsafe-base64');
 const baseURL = "https://einthusan.tv";
 const youtubedl = require("youtube-dl-exec");
+
+const LocalCache = require('node-localcache');
+const cache = new LocalCache('cache/cache.json');
 
 const {
 default:
@@ -130,6 +131,7 @@ async function meta(einthusan_id) {
 const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 async function search(lang, slug) {
+    const CacheID=slug+"_"+lang
     slug = encodeURI(slug);
 
     lang = lang.substring(0, lang.length - 6);
@@ -137,12 +139,15 @@ async function search(lang, slug) {
     var url = `${baseURL}/movie/results/?lang=${lang}&query=${slug}`;
     console.log('search url:', url);
     var res = [];
+    res = cache.getItem(CacheID);
+    if(!res){
     while (res.length == 0) {
         //console.log('res:', res);
         res = await getcatalogresults(url);
         //res = await searchresults(url,lang,slug);
         //await sleep(5000);
-    }
+    }}
+    cache.setItem(CacheID, res);
     return res;
 
 }
@@ -165,11 +170,7 @@ async function searchresults(url, lang, slug) {
         if (results_info > 1) {
             results_info = 1;
         }
-        return searchcatalog(lang, slug, results_info).then((res) => {
-            //console.log('res:',res);
-            return res;
-
-        })
+        return searchcatalog(lang, slug, results_info)
     }).catch(function (error) {
         return [];
     });

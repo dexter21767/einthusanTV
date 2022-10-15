@@ -8,10 +8,9 @@
 	"dependencies": {
 		"axios": "^0.27.2",
 		"fast-html-parser": "^1.0.1",
-		"needle": "^3.1.0",
+		"node-localcache": "^0.1.4",
 		"slugify": "^1.6.5",
 		"stremio-addon-sdk": "1.1.x",
-		"urlsafe-base64": "^1.0.0",
 		"youtube-dl-exec": "^2.1.5"
 	}
 }
