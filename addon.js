@@ -1,4 +1,4 @@
-const { addonBuilder } = require("stremio-addon-sdk");
+const { addonBuilder } = require("./stremio-addon-sdk/src/index");
 
 var slugify = require('slugify');
 const sources =  require("./sources");
