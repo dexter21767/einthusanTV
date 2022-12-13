@@ -87,7 +87,9 @@ function serveHTTP(addonInterface, opts = {}) {
 			resolve({ url, server })
 		})
 		server.on('error', reject)
+		console.log('from serverHTPP.js')
 	})
+	
 }
 
 module.exports = serveHTTP
