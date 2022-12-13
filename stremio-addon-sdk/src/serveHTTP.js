@@ -28,13 +28,13 @@ function serveHTTP(addonInterface, opts = {}) {
 				authentication: true,
 				onAuthenticate: function(req,username,password){
 				// simple check for username and password
-					return((username===process.env.USER) 
-					&& (password===process.env.PASS));
+					return((username===process.env.USER?process.env.USER:"stremio") 
+					&& (password===process.env.PASS?process.env.PASS:"stremio"));
 			}
 	
 			}
 		));
-		
+
 	app.use((_, res, next) => {
 		if (cacheMaxAge && !res.getHeader('Cache-Control'))
 			res.setHeader('Cache-Control', 'max-age='+cacheMaxAge+', public')

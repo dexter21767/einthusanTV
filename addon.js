@@ -1,6 +1,5 @@
 const { addonBuilder } = require("./stremio-addon-sdk/src/index");
 
-var slugify = require('slugify');
 const sources =  require("./sources");
 // Docs: https://github.com/Stremio/stremio-addon-sdk/blob/master/docs/api/responses/manifest.md
 const manifest = require("./manifest");
