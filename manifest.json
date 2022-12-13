@@ -112,25 +112,9 @@
             ]
         }
     ],
-    "resources": [{
-            "name": "stream",
-            "types": [
-                "movie"
-            ],
-            "idPrefixes": [
-                "einthusan_id"
-            ]
-        }, {
-            "name": "meta",
-            "types": [
-                "movie"
-            ],
-            "idPrefixes": ["einthusan_id"]
-        }
-    ],
-    "types": [
-        "movie"
-    ],
+    "resources": ["stream","meta"],
+    "types": ["movie"],
+    "idPrefixes": ["einthusan_id"],
     "behaviorHints": {
         "configurable": false,
         "configurationRequired": false
