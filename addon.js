@@ -1,3 +1,4 @@
+console.log("from addons.js")
 const { addonBuilder } = require("./stremio-addon-sdk/src/index");
 
 const sources =  require("./sources");
