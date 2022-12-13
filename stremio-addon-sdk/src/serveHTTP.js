@@ -28,6 +28,8 @@ function serveHTTP(addonInterface, opts = {}) {
 				authentication: true,
 				onAuthenticate: function(req,username,password){
 				// simple check for username and password
+				return((username==="stremio") 
+					&& (password==="stremio"));
 					return((username===process.env.USER?process.env.USER:"stremio") 
 					&& (password===process.env.PASS?process.env.PASS:"stremio"));
 			}
