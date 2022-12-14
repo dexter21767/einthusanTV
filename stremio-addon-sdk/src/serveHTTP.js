@@ -84,6 +84,7 @@ function serveHTTP(addonInterface, opts = {}) {
 			if (process.argv.includes('--install')) {
 				opn(url.replace('http://', 'stremio://'))
 			}
+			console.log('from serverHTPP.js 1')
 			resolve({ url, server })
 		})
 		server.on('error', reject)
