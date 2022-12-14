@@ -71,6 +71,7 @@ function serveHTTP(addonInterface, opts = {}) {
 		})
 
 	const server = app.listen(opts.port)
+	/*
 	return new Promise(function(resolve, reject) {
 		server.on('listening', function() {
 			const url = `http://127.0.0.1:${server.address().port}/manifest.json`
@@ -89,7 +90,7 @@ function serveHTTP(addonInterface, opts = {}) {
 		})
 		server.on('error', reject)
 		console.log('from serverHTPP.js')
-	})
+	})*/
 	
 }
 
