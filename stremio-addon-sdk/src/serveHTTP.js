@@ -28,10 +28,10 @@ function serveHTTP(addonInterface, opts = {}) {
 				authentication: true,
 				onAuthenticate: function(req,username,password){
 				// simple check for username and password
-				return((username==="stremio") 
-					&& (password==="stremio"));
-					return((username===process.env.USER?process.env.USER:"stremio") 
-					&& (password===process.env.PASS?process.env.PASS:"stremio"));
+				user = process.env.USER?process.env.USER:"stremio";
+				pass = process.env.PASS?process.env.PASS:"stremio";
+					return((username===user) 
+					&& (password===pass));
 			}
 	
 			}
@@ -71,7 +71,7 @@ function serveHTTP(addonInterface, opts = {}) {
 		})
 
 	const server = app.listen(opts.port)
-	/*
+	
 	return new Promise(function(resolve, reject) {
 		server.on('listening', function() {
 			const url = `http://127.0.0.1:${server.address().port}/manifest.json`
@@ -85,12 +85,10 @@ function serveHTTP(addonInterface, opts = {}) {
 			if (process.argv.includes('--install')) {
 				opn(url.replace('http://', 'stremio://'))
 			}
-			console.log('from serverHTPP.js 1')
 			resolve({ url, server })
 		})
 		server.on('error', reject)
-		console.log('from serverHTPP.js')
-	})*/
+	})
 	
 }
 
