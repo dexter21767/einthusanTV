@@ -1,8 +1,10 @@
 const { parse } = require("fast-html-parser");
 const youtubedl = require("youtube-dl-exec");
+const config = require('./config');
+require('dotenv').config();
+
 const axios = require('axios').default;
 
-const baseURL = "https://einthusan.tv";
 
 const NodeCache = require("node-cache");
 const cache = new NodeCache({ stdTTL: (0.5 * 60 * 60), checkperiod: (1 * 60 * 60) });
@@ -13,26 +15,18 @@ const CatalogCache = new NodeCache({ stdTTL: (0.5 * 60 * 60), checkperiod: (1 * 
 
 
 client = axios.create({
-    baseURL: baseURL,
+    baseURL: config.BaseURL,
     timeout: 5000
 });
 
-async function request(url, data) {
 
-    //console.log(url,'url');
-    return await axios
-        .get(url)
-        .then(res => {
-
-            // console.log(`statusCode: ${res.status}`);
-            return res;
-
-        })
-        .catch(error => {
-            //console.error(error);
-            console.log('error');
-        });
-
+async function request(url) {
+    try {
+        return await client
+            .get(url)
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 async function stream(einthusan_id) {
@@ -41,16 +35,25 @@ async function stream(einthusan_id) {
         const Cached = StreamCache.get(id);
         if (Cached) return Cached;
 
-        let url = `${baseURL}/movie/watch/${id}/`;
+        let url = `${config.BaseURL}/movie/watch/${id}/`;
+        /*
+        console.log(youtubedl.args(url,{
+            dumpSingleJson: true,
+            simulate: true,
+            skipDownload: true,
+            noDownload:true,
+        }));
+        */
         let info = await youtubedl(url, {
-            dumpSingleJson: true
+            dumpSingleJson: true,
+            simulate: true,
+            skipDownload: true,
+            noDownload: true,
         });
-
+        //console.log(info)
         if (!info) throw "error on youtubedl";
 
         let streams = {
-            name: 'einthusan',
-            description: 'einthusan',
             url: info.url,
         };
         //console.log(streams)
@@ -68,7 +71,7 @@ async function meta(einthusan_id) {
         const Cached = MetaCache.get(id);
         if (Cached) return Cached;
 
-        var url = `${baseURL}/movie/watch/${id}/`;
+        var url = `/movie/watch/${id}/`;
         console.log("url", url);
         var res = await request(url);
         if (!res || !res.data) throw "error requesting metadata";
@@ -147,88 +150,40 @@ async function meta(einthusan_id) {
         console.error(e)
     }
 }
-const sleep = (waitTimeInMs) => new Promise(resolve => setTimeout(resolve, waitTimeInMs));
 
 async function search(lang, slug) {
-    const CacheID = slug + "_" + lang
-    slug = encodeURI(slug);
+    try {
+        const CacheID = slug + "_" + lang
+        slug = encodeURI(slug);
 
-    lang = lang.substring(0, lang.length - 6);
+        lang = lang.substring(0, lang.length - 6);
 
-    var url = `${baseURL}/movie/results/?lang=${lang}&query=${slug}`;
-    console.log('search url:', url);
-    var res = [];
-    res = cache.get(CacheID);
-    if (!res) {
-        while (!res || res.length == 0) {
-            //console.log('res:', res);
-            res = await getcatalogresults(url);
-            //res = await searchresults(url,lang,slug);
-            //await sleep(5000);
+        const url = `/movie/results/?lang=${lang}&query=${slug}`;
+        console.log('search url:', url);
+        let res = [];
+        res = cache.get(CacheID);
+        if (!res) {
+            while (!res || res.length == 0) {
+                res = await getcatalogresults(url);
+            }
         }
+        cache.set(CacheID, res);
+        return res;
+    } catch (e) {
+        console.error(e);
     }
-    cache.set(CacheID, res);
-    return res;
-
-}
-async function searchresults(url, lang, slug) {
-    return request(
-        url).then((res) => {
-            if (res.status != 200) {
-                return [];
-            }
-            var html = parse(res.data);
-            //var search_results = html.querySelector('#UIMovieSummary');
-            var search_results = html.querySelector("#UIMovieSummary");
-            //console.log('search_results:', search_results, lang);
-            if (search_results) {
-                search_results = search_results.querySelectorAll("li");
-            } else {
-                return [];
-            }
-            var results_info = html.querySelector("div.results-info p").childNodes[0].rawText.split('Page ')[1].split(' of ')[1];
-            if (results_info > 1) {
-                results_info = 1;
-            }
-            return searchcatalog(lang, slug, results_info)
-        }).catch(function (error) {
-            return [];
-        });
-}
-async function searchcatalog(lang, slug, pages) {
-    var resultsarray = [];
-    for (let i = 1; i <= pages; i++) {
-        resultsarray[i - 1] = await getcatalog(lang, slug, i);
-    }
-    return resultsarray.flat();
-}
-
-async function getcatalog(lang, slug, page) {
-    if (page == 1) {
-        var url = `${baseURL}/movie/results/?lang=${lang}&query=${slug}`;
-    } else {
-        var url = `${baseURL}/movie/results/?lang=${lang}&page=${page}&query=${slug}`;
-    }
-    var cat = [];
-    while (cat.length == 0) {
-        //console.log('res:', cat);
-        cat = await getcatalogresults(url);
-        //await sleep(5000);
-    }
-    return cat;
-
 }
 
 async function getcatalogresults(url) {
     try {
         const Cached = CatalogCache.get(url);
-        if(Cached) return Cached;
+        if (Cached) return Cached;
 
         let res = await request(url);
-        if (!res || !res.data) throw "error";
-
+        if (!res || !res.data) throw "error getcatalogresults";
         var html = parse(res.data);
         var search_results = html.querySelector("#UIMovieSummary");
+        //console.log("search_results",search_results)
         if (search_results) {
             search_results = search_results.querySelectorAll("li");
         } else {
@@ -249,8 +204,8 @@ async function getcatalogresults(url) {
                 posterShape: 'poster'
             })
         }
-        if(resultsarray) CatalogCache.set(url,resultsarray);
-        //console.log('resultsarray:', resultsarray);
+        if (resultsarray) CatalogCache.set(url, resultsarray);
+        console.log('resultsarray:', resultsarray);
         return resultsarray;
 
     } catch (e) {

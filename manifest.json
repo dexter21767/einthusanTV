@@ -1,122 +1,17 @@
 {
     "id": "community.einthusantv",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "name": "einthusanTV by dexter21767",
     "description": "Addon for Streaming from einthusanTV by Dexter21767",
     "logo": "https://i.imgur.com/hmTKdwR.png",
 	"background":"https://raw.githubusercontent.com/Stremio/stremio-art/main/originals/Ahlen%20Ken%20A.%20Batalon.png",
     "contactEmail": "ahmidiyasser@gmail.com",
-    "catalogs": [{
-            "type": "movie",
-
-            "id": "hindimovies",
-
-            "name": "movies - Hindi",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "tamilmovies",
-
-            "name": "movies - Tamil",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "telugumovies",
-
-            "name": "movies - Telugu",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "malayalammovies",
-
-            "name": "movies - Malayalam",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "kannadamovies",
-
-            "name": "movies - Kannada",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "bengalimovies",
-
-            "name": "movies - Bengali",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "marathimovies",
-
-            "name": "movies - Marathi",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }, {
-            "type": "movie",
-
-            "id": "punjabimovies",
-
-            "name": "movies - Punjabi",
-
-            "extra":
-            [{
-                    "name": "search",
-                    "isRequired": true
-                }
-            ]
-        }
-    ],
+    "catalogs": [],
     "resources": ["stream","meta"],
     "types": ["movie"],
     "idPrefixes": ["einthusan_id"],
     "behaviorHints": {
-        "configurable": false,
-        "configurationRequired": false
+        "configurable": true,
+        "configurationRequired": true
     }
 }

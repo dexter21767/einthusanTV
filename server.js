@@ -1,9 +1,12 @@
 #!/usr/bin/env node
+const app = require('./index.js')
+const {  publishToCentral } = require("stremio-addon-sdk");
+const config = require('./config.js');
 
-const { serveHTTP, publishToCentral } = require("./stremio-addon-sdk/src/index");
-const addonInterface = require("./addon")
-serveHTTP(addonInterface, { port: process.env.PORT || 63355 })
-console.log("process",process)
-// when you've deployed your addon, un-comment this line
-publishToCentral("https://2ecbbd610840-einthusantv.baby-beamup.club/manifest.json")
-// for more information on deploying, see: https://github.com/Stremio/stremio-addon-sdk/blob/master/docs/deploying/README.md
+// create local server
+app.listen((config.port), function () {
+    console.log(`Addon active on port ${config.port}`);
+    console.log(`HTTP addon accessible at: ${config.local}/configure`);
+});
+
+//publishToCentral("https://2ecbbd610840-einthusantv.baby-beamup.club/manifest.json")
