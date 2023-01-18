@@ -1,20 +1,15 @@
 const express = require("express");
-app = express(),
+	app = express(),
 	cors = require('cors'),
 	path = require('path'),
 	swStats = require('swagger-stats');
 
 const langs = ["hindi", "tamil", "telugu", "malayalam", "kannada", "bengali", "marathi", "punjabi"],
-	sources = require("./sources");
-config = require('./config.js');
-manifest = require("./manifest");
+	sources = require("./sources"),
+	config = require('./config'),
+	manifest = require("./manifest");
 
 app.set('trust proxy', true)
-
-app.use('/configure', express.static(path.join(__dirname, 'vue', 'dist')));
-app.use('/assets', express.static(path.join(__dirname, 'vue', 'dist', 'assets')));
-
-app.use(cors())
 
 app.use(swStats.getMiddleware({
 	name: manifest.name,
@@ -31,6 +26,11 @@ app.use(swStats.getMiddleware({
 
 console.log(`Swagger-Stats accessible at: ${config.local}/swagger-stats`)
 
+
+app.use('/configure', express.static(path.join(__dirname, 'vue', 'dist')));
+app.use('/assets', express.static(path.join(__dirname, 'vue', 'dist', 'assets')));
+
+app.use(cors())
 
 app.get('/', (_, res) => {
 	res.redirect('/configure/')
