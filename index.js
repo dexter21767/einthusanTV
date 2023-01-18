@@ -1,13 +1,13 @@
 const express = require("express");
-	app = express(),
+app = express(),
 	cors = require('cors'),
 	path = require('path'),
 	swStats = require('swagger-stats');
 
 const langs = ["hindi", "tamil", "telugu", "malayalam", "kannada", "bengali", "marathi", "punjabi"],
 	sources = require("./sources");
-	config = require('./config.js');
-	manifest = require("./manifest");
+config = require('./config.js');
+manifest = require("./manifest");
 
 app.set('trust proxy', true)
 
@@ -82,7 +82,7 @@ app.get('/:configuration?/catalog/movie/:id/:extra?.json', async (req, res) => {
 	try {
 		console.log(req.params);
 		let { id, extra } = req.params;
-		if (!langs.includes(id)) throw new Error("invalide catalog id") 
+		if (!langs.includes(id)) throw new Error("invalide catalog id")
 		if (extra) extra = new URLSearchParams(extra);
 		console.log(extra)
 		if (extra.has("search")) {
@@ -90,41 +90,53 @@ app.get('/:configuration?/catalog/movie/:id/:extra?.json', async (req, res) => {
 			await Promise.resolve(sources.search(id, extra.get("search")))
 				.then((metas) => (res.send({ metas: metas })));
 		} else res.send({ metas: [] })
-		
+
 		res.end();
+
 	} catch (e) {
 		console.log(e)
-		res.end(JSON.stringify(e));
+		res.end(e);
 	}
 })
 app.get('/:configuration?/meta/movie/:id/:extra?.json', async (req, res) => {
+	
 	res.setHeader('Cache-Control', 'max-age=86400,staleRevalidate=stale-while-revalidate, staleError=stale-if-error, public');
 	res.setHeader('Content-Type', 'application/json');
+	try {
+		console.log(req.params);
+		const { id } = req.params;
 
-	console.log(req.params);
-	const { id } = req.params;
+		if (id.startsWith("einthusan_id:")) {
+			await Promise.resolve(sources.meta(id))
+				.then((meta) => (res.send({ meta: meta })));
+		} else res.send({ meta: [] })
 
-	if (id.startsWith("einthusan_id:")) {
-		await Promise.resolve(sources.meta(id))
-			.then((meta) => (res.send({ meta: meta })));
-	} else res.send({ meta: [] })
+		res.end();
 
-	res.end();
+	} catch (e) {
+		console.log(e)
+		res.end(e);
+	}
 })
 app.get('/:configuration?/stream/movie/:id/:extra?.json', async (req, res) => {
+
 	res.setHeader('Cache-Control', 'max-age=86400,staleRevalidate=stale-while-revalidate, staleError=stale-if-error, public');
 	res.setHeader('Content-Type', 'application/json');
+	try {
+		console.log(req.params);
+		const { id } = req.params;
 
-	console.log(req.params);
-	const { id } = req.params;
+		if (id.startsWith("einthusan_id:")) {
+			await Promise.resolve(sources.stream(id))
+				.then((streams) => (res.send({ streams: [streams] })));
 
-	if (id.startsWith("einthusan_id:")) {
-		await Promise.resolve(sources.stream(id))
-			.then((streams) => (res.send({ streams: [streams] })));
+		} else res.send({ streams: [] })
 
-	} else res.send({ streams: [] })
-	
-	res.end();
+		res.end();
+	} catch (e) {
+		console.log(e)
+		res.end(e);
+	}
 })
 
 

@@ -20,14 +20,6 @@ client = axios.create({
 });
 
 
-async function request(url) {
-    try {
-        return await client
-            .get(url)
-    } catch (e) {
-        console.error(e);
-    }
-}
 
 async function stream(einthusan_id) {
     try {
@@ -62,6 +54,7 @@ async function stream(einthusan_id) {
 
     } catch (e) {
         console.error(e);
+        return Promise.reject(e);
     }
 }
 
@@ -73,7 +66,7 @@ async function meta(einthusan_id) {
 
         var url = `/movie/watch/${id}/`;
         console.log("url", url);
-        var res = await request(url);
+        var res = await client.get(url);
         if (!res || !res.data) throw "error requesting metadata";
         var html = parse(res.data);
 
@@ -147,7 +140,8 @@ async function meta(einthusan_id) {
         //console.log("metaObj", metaObj);
         return metaObj;
     } catch (e) {
-        console.error(e)
+        console.error(e);
+        return Promise.reject(e);
     }
 }
 
@@ -171,6 +165,7 @@ async function search(lang, slug) {
         return res;
     } catch (e) {
         console.error(e);
+        return Promise.reject(e);
     }
 }
 
@@ -179,7 +174,7 @@ async function getcatalogresults(url) {
         const Cached = CatalogCache.get(url);
         if (Cached) return Cached;
 
-        let res = await request(url);
+        let res = await client.get(url);
         if (!res || !res.data) throw "error getcatalogresults";
         var html = parse(res.data);
         var search_results = html.querySelector("#UIMovieSummary");
@@ -210,6 +205,7 @@ async function getcatalogresults(url) {
 
     } catch (e) {
         console.error(e);
+        return Promise.reject(e);
     }
 }
 
