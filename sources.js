@@ -16,26 +16,19 @@ const CatalogCache = new NodeCache({ stdTTL: (0.5 * 60 * 60), checkperiod: (1 * 
 
 client = axios.create({
     baseURL: config.BaseURL,
-    timeout: 5000
+    timeout: 10000
 });
 
 
 
 async function stream(einthusan_id) {
     try {
-        var id = einthusan_id.split(":")[1];
+        const id = einthusan_id.split(":")[1];
         const Cached = StreamCache.get(id);
         if (Cached) return Cached;
 
         let url = `${config.BaseURL}/movie/watch/${id}/`;
-        /*
-        console.log(youtubedl.args(url,{
-            dumpSingleJson: true,
-            simulate: true,
-            skipDownload: true,
-            noDownload:true,
-        }));
-        */
+
         let info = await youtubedl(url, {
             dumpSingleJson: true,
             simulate: true,
@@ -60,48 +53,48 @@ async function stream(einthusan_id) {
 
 async function meta(einthusan_id) {
     try {
-        var id = einthusan_id.split(":")[1];
+        const id = einthusan_id.split(":")[1];
         const Cached = MetaCache.get(id);
         if (Cached) return Cached;
 
-        var url = `/movie/watch/${id}/`;
+        const url = `/movie/watch/${id}/`;
         console.log("url", url);
-        var res = await client.get(url);
+        const res = await client.get(url);
         if (!res || !res.data) throw "error requesting metadata";
-        var html = parse(res.data);
+        const html = parse(res.data);
 
-        var movie_description = html.querySelector("#UIMovieSummary").querySelector("li");
-        var img = movie_description.querySelector("div.block1 a img").rawAttributes['src'];
-        var year = movie_description.querySelector("div.info p").childNodes[0].rawText;
-        var title = movie_description.querySelector("a.title h3").rawText;
-        var description = movie_description.querySelector("p.synopsis").rawText;
+        const movie_description = html.querySelector("#UIMovieSummary").querySelector("li");
+        const img = movie_description.querySelector("div.block1 a img").rawAttributes['src'];
+        const year = movie_description.querySelector("div.info p").childNodes[0].rawText;
+        const title = movie_description.querySelector("a.title h3").rawText;
+        const description = movie_description.querySelector("p.synopsis").rawText;
         //var genresarray = details[3].childNodes[2].querySelectorAll("a");
         var genresarray = [];
 
-        var actorsarray = html.querySelectorAll("div.prof p");
+        const actorsarray = html.querySelectorAll("div.prof p");
 
-        var trailer = html.querySelectorAll("div.extras a")[1];
+        let trailer = html.querySelectorAll("div.extras a")[1];
         if (trailer.rawAttributes['href']) {
             trailer = trailer.rawAttributes['href'].split("v=")[1];
         } else {
             trailer = false;
         }
 
-        var actors = [];
+        let actors = [];
         if (actorsarray) {
             for (let i = 0; i < actorsarray.length; i++) {
                 actors[i] = actorsarray[i].rawText;
             }
         }
 
-        var genres = [];
+        let genres = [];
         if (genresarray) {
             for (let i = 0; i < genresarray.length; i++) {
                 genres[i] = genresarray[i].rawText;
             }
         }
 
-        var metaObj = {
+        let metaObj = {
             id: einthusan_id,
             name: title,
             posterShape: 'poster',
@@ -154,8 +147,7 @@ async function search(lang, slug) {
 
         const url = `/movie/results/?lang=${lang}&query=${slug}`;
         console.log('search url:', url);
-        let res = [];
-        res = cache.get(CacheID);
+        let res = cache.get(CacheID);
         if (!res) {
             while (!res || res.length == 0) {
                 res = await getcatalogresults(url);
@@ -174,22 +166,22 @@ async function getcatalogresults(url) {
         const Cached = CatalogCache.get(url);
         if (Cached) return Cached;
 
-        let res = await client.get(url);
+        const res = await client.get(url);
         if (!res || !res.data) throw "error getcatalogresults";
-        var html = parse(res.data);
-        var search_results = html.querySelector("#UIMovieSummary");
+        const html = parse(res.data);
+        let search_results = html.querySelector("#UIMovieSummary");
         //console.log("search_results",search_results)
         if (search_results) {
             search_results = search_results.querySelectorAll("li");
         } else {
             return [];
         }
-        var resultsarray = [];
+        let resultsarray = [];
         for (let i = 0; i < search_results.length; i++) {
-            var img = search_results[i].querySelector("div.block1 a img").rawAttributes['src'];
-            var year = search_results[i].querySelector("div.info p").childNodes[0].rawText;
-            var title = search_results[i].querySelector("a.title h3").rawText;
-            var id = search_results[i].querySelector("a.title").rawAttributes['href'];
+            const img = search_results[i].querySelector("div.block1 a img").rawAttributes['src'];
+            const year = search_results[i].querySelector("div.info p").childNodes[0].rawText;
+            const title = search_results[i].querySelector("a.title h3").rawText;
+            const id = search_results[i].querySelector("a.title").rawAttributes['href'];
             resultsarray.push({
                 id: "einthusan_id:" + id.split('/')[3],
                 type: "movie",

@@ -9,4 +9,5 @@ app.listen((config.port), function () {
     console.log(`HTTP addon accessible at: ${config.local}/configure`);
 });
 
-publishToCentral("https://2ecbbd610840-einthusantv.baby-beamup.club/manifest.json")
+publishToCentral("https://2ecbbd610840-einthusantv.baby-beamup.club/manifest.json").catch(e=>console.error(e))
+
