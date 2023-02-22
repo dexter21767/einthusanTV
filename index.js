@@ -1,8 +1,10 @@
-const express = require("express");
+const express = require("express"),
 	app = express(),
 	cors = require('cors'),
 	path = require('path'),
-	swStats = require('swagger-stats');
+	swStats = require('swagger-stats'),
+	serveIndex = require('serve-index');
+
 
 const langs = ["hindi", "tamil", "telugu", "malayalam", "kannada", "bengali", "marathi", "punjabi"],
 	sources = require("./sources"),
@@ -26,6 +28,7 @@ app.use(swStats.getMiddleware({
 
 console.log(`Swagger-Stats accessible at: ${config.local}/swagger-stats`)
 
+app.use('/logs', express.static(path.join(__dirname, 'logs'),{etag: false}), serveIndex('logs', {'icons': true,'view':'details '}))
 
 app.use('/configure', express.static(path.join(__dirname, 'vue', 'dist')));
 app.use('/assets', express.static(path.join(__dirname, 'vue', 'dist', 'assets')));

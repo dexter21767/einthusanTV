@@ -3,7 +3,7 @@
 	"version": "0.2.0",
 	"description": "einthusanTV by dexter21767",
 	"scripts": {
-		"start": "node server.js",
+		"start": "node subprocess.js",
 		"dev": "nodemon server.js"
 	},
 	"dependencies": {
@@ -14,8 +14,10 @@
 		"express-rate-limit": "^6.6.0",
 		"fast-html-parser": "^1.0.1",
 		"node-cache": "^5.1.2",
+		"serve-index": "^1.9.1",
 		"stremio-addon-sdk": "latest",
 		"swagger-stats": "^0.99.4",
+		"winston-daily-rotate-file": "^4.7.1",
 		"youtube-dl-exec": "^2.1.11"
 	},
 	"devDependencies": {
