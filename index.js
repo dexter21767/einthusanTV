@@ -85,7 +85,10 @@ app.get('/:configuration?/catalog/movie/:id/:extra?.json', async (req, res) => {
 	try {
 		console.log(req.params);
 		let { id, extra } = req.params;
-		if (!langs.includes(id)) throw new Error("invalide catalog id")
+		if (!langs.includes(id)) {
+			id = id.split('movies')[0];
+			if(!id || !langs.includes(id)) throw new Error("invalide catalog id");
+		}
 		if (extra) extra = new URLSearchParams(extra);
 		console.log(extra)
 		if (extra.has("search")) {
@@ -97,7 +100,7 @@ app.get('/:configuration?/catalog/movie/:id/:extra?.json', async (req, res) => {
 		res.end();
 
 	} catch (e) {
-		console.log(e)
+		console.error(e)
 		res.end(e);
 	}
 })
@@ -117,7 +120,7 @@ app.get('/:configuration?/meta/movie/:id/:extra?.json', async (req, res) => {
 		res.end();
 
 	} catch (e) {
-		console.log(e)
+		console.error(e)
 		res.end(e);
 	}
 })
@@ -137,7 +140,7 @@ app.get('/:configuration?/stream/movie/:id/:extra?.json', async (req, res) => {
 
 		res.end();
 	} catch (e) {
-		console.log(e)
+		console.error(e)
 		res.end(e);
 	}
 })
