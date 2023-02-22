@@ -27,7 +27,7 @@ app.use(swStats.getMiddleware({
 }));
 
 app.use((req, res, next) => {
-	req.setTimeout(15 * 1000); // timeout time
+	req.setTimeout(25 * 1000); // timeout time
 	req.socket.removeAllListeners('timeout');
 	req.socket.once('timeout', () => {
 		req.timedout = true;
