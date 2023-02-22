@@ -1,6 +1,6 @@
 var env = process.env.NODE_ENV ? 'beamup':'local';
 
-var config = {
+let config = {
     BaseURL: "https://einthusan.tv"
 }
 
