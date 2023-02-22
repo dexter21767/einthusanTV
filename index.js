@@ -26,6 +26,16 @@ app.use(swStats.getMiddleware({
 	}
 }));
 
+app.use((req, res, next) => {
+    req.setTimeout(15 * 1000); // timeout time
+    req.socket.removeAllListeners('timeout'); 
+    req.socket.once('timeout', () => {
+        req.timedout = true;
+        res.status(504).end();
+    });
+	if (!req.timedout) next()
+});
+
 console.log(`Swagger-Stats accessible at: ${config.local}/swagger-stats`)
 
 app.use('/logs', express.static(path.join(__dirname, 'logs'),{etag: false}), serveIndex('logs', {'icons': true,'view':'details '}))
@@ -101,7 +111,6 @@ app.get('/:configuration?/catalog/movie/:id/:extra?.json', async (req, res) => {
 
 	} catch (e) {
 		console.error(e)
-		res.end(e);
 	}
 })
 app.get('/:configuration?/meta/movie/:id/:extra?.json', async (req, res) => {
@@ -121,7 +130,6 @@ app.get('/:configuration?/meta/movie/:id/:extra?.json', async (req, res) => {
 
 	} catch (e) {
 		console.error(e)
-		res.end(e);
 	}
 })
 app.get('/:configuration?/stream/movie/:id/:extra?.json', async (req, res) => {
@@ -141,7 +149,6 @@ app.get('/:configuration?/stream/movie/:id/:extra?.json', async (req, res) => {
 		res.end();
 	} catch (e) {
 		console.error(e)
-		res.end(e);
 	}
 })
 
