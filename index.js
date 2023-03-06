@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 
 console.log(`Swagger-Stats accessible at: ${config.local}/swagger-stats`)
 
-app.use('/logs', express.static(path.join(__dirname, 'logs'), { etag: false }), serveIndex('logs', { 'icons': true, 'view': 'details ' }))
+app.use('/logs', express.static(path.join(__dirname, 'logs'),{etag: false}), serveIndex('logs', {'icons': true,'view':'details '}))
 
 app.use('/configure', express.static(path.join(__dirname, 'vue', 'dist')));
 app.use('/assets', express.static(path.join(__dirname, 'vue', 'dist', 'assets')));

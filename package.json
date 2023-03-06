@@ -1,9 +1,10 @@
 {
 	"name": "stremio-einthusantv",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "einthusanTV by dexter21767",
 	"scripts": {
-		"start": "node subprocess.js",
+		"postinstall": "sh ./postinstall.sh",
+		"start": "node server.js",
 		"dev": "nodemon server.js"
 	},
 	"dependencies": {
