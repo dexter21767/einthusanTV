@@ -1,2 +1,2 @@
-release: sh ./postinstall.sh
+release: ./postinstall.sh
 web: ./beamup-logger -p $PORT -m 10d -- execute npm start
